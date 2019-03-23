@@ -346,7 +346,7 @@
   :group 'edit)
 
 ;; This is autoloaded so that it will take effect without users having
-;; to `load'/`require' this package in their init file.  
+;; to `load'/`require' this package in their init file.
 ;;;###autoload
 (defcustom irfc-assoc-mode nil
   "If non-nil, RFC documents are associated with `irfc-mode'.
@@ -366,7 +366,7 @@ Default is nil."
   :type 'string
   :group 'irfc)
 
-(defcustom irfc-download-base-url "http://www.ietf.org/rfc/"
+(defcustom irfc-download-base-url "https://www.ietf.org/rfc/"
   "The base URL for downloading RFC documents."
   :type 'string
   :group 'irfc)
@@ -395,11 +395,11 @@ t."
   :group 'irfc)
 
 (defcustom irfc-requirement-keywords '("MUST" "MUST NOT"
-				       "REQUIRED"
-				       "SHALL" "SHALL NOT"
-				       "SHOULD" "SHOULD NOT"
-				       "RECOMMENDED" "NOT RECOMMENDED"
-				       "MAY" "OPTIONAL" "NOT")
+				                       "REQUIRED"
+				                       "SHALL" "SHALL NOT"
+				                       "SHOULD" "SHOULD NOT"
+				                       "RECOMMENDED" "NOT RECOMMENDED"
+				                       "MAY" "OPTIONAL" "NOT")
   "List of requirement keyword strings to be highlighted if
 `irfc-highlight-requirement-keywords' is t."
   :type '(repeat (string))
@@ -732,20 +732,20 @@ You can jump to the corresponding content when you are at table."
     (goto-char (point-min))
     (while (not done)
       (if (not (re-search-forward
-		(concat "^[ \t]*"
-			(format irfc-reference-format-regex number))
-		(point-max) t))
-	  (setq done t)
-	(setq beg (match-beginning 0))
-	(setq end (match-end 0))
-	(let ((name (irfc-current-head)))
-	  (if (not (or (string= name "References")
-		       (string= name "Normative References")
-		       (string= name "Informative References")))
-	      (goto-char end)
-	    (goto-char beg)
-	    (setq found t)
-	    (setq done t)))))
+		        (concat "^[ \t]*"
+			            (format irfc-reference-format-regex number))
+		        (point-max) t))
+	      (setq done t)
+	    (setq beg (match-beginning 0))
+	    (setq end (match-end 0))
+	    (let ((name (irfc-current-head)))
+	      (if (not (or (string= name "References")
+		               (string= name "Normative References")
+		               (string= name "Informative References")))
+	          (goto-char end)
+	        (goto-char beg)
+	        (setq found t)
+	        (setq done t)))))
     (when (not found)
       (goto-char original-position)
       (message "Cannot find reference %d" number))))
@@ -755,7 +755,7 @@ You can jump to the corresponding content when you are at table."
 default."
   (let ((default (irfc-reference-at-point)))
     (if (eq default nil)
-	(read-number "Reference number: ")
+	    (read-number "Reference number: ")
       (read-number "Reference number: " default))))
 
 (defun irfc-reference-at-point ()
@@ -764,7 +764,7 @@ found."
   (if (not (thing-at-point-looking-at irfc-reference-regex))
       nil
     (let* ((match (buffer-substring (match-beginning 0) (match-end 0)))
-	   (len (length match)))
+	       (len (length match)))
       (string-to-number (substring match 1 (1- len))))))
 
 (defun irfc-read-heading-name ()
@@ -786,7 +786,7 @@ not found."
       nil
     (let ((match (match-string 0)))
       (cond ((member match irfc-heading-numbers-list) match)
-	    ((member (concat match ".") irfc-heading-numbers-list) (concat match "."))))))
+	        ((member (concat match ".") irfc-heading-numbers-list) (concat match "."))))))
 
 (defun irfc-page-goto (number)
   "Goto page NUMBER."
@@ -893,7 +893,7 @@ does not exist in `irfc-directory'."
   (interactive (list (irfc-read-heading-name)))
   (let ((new-point (gethash NAME irfc-heading-names-table)))
     (if (eq new-point nil)
-	(message "Cannot find heading \"%s\"" NAME)
+	    (message "Cannot find heading \"%s\"" NAME)
       (goto-char new-point)
       (back-to-indentation))))
 
@@ -939,7 +939,7 @@ If optional argument PRINT is non-nil, print the name before returning it."
   (interactive (list (irfc-read-heading-number)))
   (let ((new-point (gethash NAME irfc-heading-numbers-table)))
     (if (eq new-point nil)
-	(irfc-head-number-goto (concat NAME "."))
+	    (irfc-head-number-goto (concat NAME "."))
       (goto-char new-point)
       (back-to-indentation))))
 
@@ -995,8 +995,8 @@ If optional argument PRINT is non-nil, print the name before returning it."
   ;; Make sure `irfc-directory' exists.
   (unless (file-directory-p irfc-directory)
     (if (y-or-n-p (format "Create directory %s to hold RFCs? "
-			  irfc-directory))
-	(make-directory irfc-directory t)
+			              irfc-directory))
+	    (make-directory irfc-directory t)
       (error "Customize `irfc-directory', then!")))
 
   (let (filepath)
@@ -1202,11 +1202,11 @@ Argument TOP-POINT is the top point of RFC buffer after render."
 Argument TITLE-LINE-POINT is the title line point of RFC buffer after render."
   (goto-char title-line-point)
   (let ((rfc-txt "")
-	(rfc-title ""))
+	    (rfc-title ""))
     ;; Set RFC title
     (when (re-search-forward (concat
-			      "\\([^ \t\f\r\n].*[^ \t\f\r\n]\\)"
-			      "\\(\r?\n[ \t]*[^ \t\f\r\n].*[^ \t\f\r\n]\\)*"))
+			                  "\\([^ \t\f\r\n].*[^ \t\f\r\n]\\)"
+			                  "\\(\r?\n[ \t]*[^ \t\f\r\n].*[^ \t\f\r\n]\\)*"))
       (setq rfc-title (match-string 0))
       (setq rfc-title (replace-regexp-in-string "[\r\n\t\f ]+" " " rfc-title)))
     ;; Set RFC txt
@@ -1214,7 +1214,7 @@ Argument TITLE-LINE-POINT is the title line point of RFC buffer after render."
       (setq rfc-txt (match-string 1 (buffer-name))))
     ;; Set buffer name
     (if irfc-buffer-name-includes-title
-	(rename-buffer (concat rfc-title " (" rfc-txt ")"))
+	    (rename-buffer (concat rfc-title " (" rfc-txt ")"))
       (rename-buffer rfc-txt))))
 
 (defun irfc-fill-tables (title-line-point)
@@ -1232,15 +1232,15 @@ Argument TITLE-LINE-POINT is the title line point of RFC buffer after render."
         (puthash (buffer-substring (nth 0 match-list) (nth 1 match-list))
                  (nth 0 match-list) irfc-heading-numbers-table))
       (puthash (buffer-substring (nth 2 match-list) (nth 3 match-list))
-	       (nth 2 match-list) irfc-heading-names-table))
+	           (nth 2 match-list) irfc-heading-names-table))
     ;; Generate irfc-heading-numbers-list
     (maphash (lambda (number _point)
-	       (setq irfc-heading-numbers-list (cons number irfc-heading-numbers-list)))
-	     irfc-heading-numbers-table)
+	           (setq irfc-heading-numbers-list (cons number irfc-heading-numbers-list)))
+	         irfc-heading-numbers-table)
     ;; Generate irfc-heading-names-list
     (maphash (lambda (name _point)
-	       (setq irfc-heading-names-list (cons name irfc-heading-names-list)))
-	     irfc-heading-names-table)))
+	           (setq irfc-heading-names-list (cons name irfc-heading-names-list)))
+	         irfc-heading-names-table)))
 
 (defun irfc-head-move (&optional reverse)
   "Move to special heading.
