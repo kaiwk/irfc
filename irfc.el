@@ -366,7 +366,7 @@ Default is nil."
   :type 'string
   :group 'irfc)
 
-(defcustom irfc-download-base-url "https://www.ietf.org/rfc/"
+(defcustom irfc-download-base-url "https://tools.ietf.org/rfc/"
   "The base URL for downloading RFC documents."
   :type 'string
   :group 'irfc)
